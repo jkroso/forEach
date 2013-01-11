@@ -1,0 +1,14 @@
+{
+  "name": "async-forEach",
+  "repo": "jkroso/async-forEach",
+  "description": "perform an optionally async operation on each item of an array",
+  "version": "0.1.0",
+  "keywords": ["aysnc","iteration","array","series"],
+  "dependencies": {},
+  "main": "src/index.js",
+  "scripts": [
+	"src/index.js"
+  ],
+  "styles":[],
+  "license": "MIT"
+}
