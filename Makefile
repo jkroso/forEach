@@ -9,7 +9,7 @@ build: install
 	@component build -dv
 
 test:
-	@mocha -R spec test/index.test.js
+	@mocha -R spec test/*.test.js
 
 build-test:
 	@node_modules/.bin/bigfile --entry=test/browser.js --write=test/built.js -lb
