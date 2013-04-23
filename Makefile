@@ -1,27 +1,21 @@
-all: clean build test
+REPORTER= spec
+SRC=index.js series.js async.js
 
-install: components
-
-components:
-	@component install -d
-
-build: install
-	@component build -dv
+all: test/built.js
 
 test:
-	@mocha -R spec test/*.test.js
-
-build-test:
-	@node_modules/.bin/bigfile --entry=test/browser.js --write=test/built.js -lb
+	@node_modules/.bin/mocha test/*.test.js \
+		-R $(REPORTER)
 
 clean:
-	@rm -rf dist test/built.js components build
+	@rm -rf dist
+	@rm -rf test/built.js
 
-Readme.md: src/index.js docs/head.md docs/tail.md
-	@cat docs/head.md > Readme.md
-	@cat src/index.js\
-	 | sed s/.*=.$$//\
-	 | dox -a >> Readme.md
-	@cat docs/tail.md >> Readme.md
+test/built.js: $(SRC) test/*
+	@node_modules/.bin/sourcegraph.js test/browser.js \
+		--plugins mocha,nodeish \
+		| node_modules/.bin/bigfile.js \
+			--export null \
+			--plugins nodeish,javascript > $@
 
-.PHONY: all build test build-test clean install
+.PHONY: all test clean browser

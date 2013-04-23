@@ -1,86 +1,113 @@
+
 var should = require('chai').should()
-  , each = require('../src')
-  , eachSeries = each.series
+  , each = require('..')
+  , series = require('../series')
+  , parallel = require('../async')
 
 function random () {
 	return Math.round(Math.random() * 10)
 }
 
-describe('forEach([...], fn, cb) async', function () {
-	it('should enumerate each value before calling completing', function (done) {
-		each([1,3,2], function (item, done) {
-			item.should.be.within(1, 3)
-			setTimeout(done, random())
-		}, done)
+function delay(fn){
+	var args = [].slice.call(arguments, 1)
+	setTimeout(function () {
+		fn.apply(null, args)
+	}, random())
+}
+
+function error(){ throw new Error('should not be called') }
+
+var context = {}
+
+describe('each', function () {
+	it('should handle arrays', function () {
+		var res = []
+		each([1,2,3], function(v, k){
+			this.should.equal(context)
+			res.push([k,v])
+		}, context)
+		res.should.deep.equal([[0,1], [1,2], [2,3]])
+	})
+
+	it('should handle objects', function () {
+		var res = []
+		each({a:1,b:2,c:3}, function(v, k){
+			this.should.equal(context)
+			res.push([k,v])
+		}, context)
+		res.should.deep.equal([['a',1], ['b',2], ['c',3]])
 	})
 })
 
-describe('forEach empty array', function () {
-	it('should not call the iterator', function (done) {
-		each([], function (item) {
-			throw new Error('should not call the iterator')
-		}, done)
+describe('series', function () {
+	it('should handle arrays', function (done) {
+		var res = []
+		series([1,2,3], function(v, k, done){
+			this.should.equal(context)
+			res.push([k,v])
+			delay(done)
+		}, context).then(function(){
+			res.should.deep.equal([[0,1], [1,2], [2,3]])
+		}).node(done)
+	})
+
+	it('should handle objects', function (done) {
+		var res = []
+		series({0:1,1:2,2:3}, function(v, k, next){
+			this.should.equal(context)
+			delay(function(){
+				res.push([k, v])
+				next()
+			})
+		}, context).then(function(){
+			res.should.deep.equal([['0',1], ['1',2], ['2',3]])
+		}).node(done)
+	})
+
+	describe('should immediatly complete if given empty imput', function (done) {
+		test('array', [])
+		test('object', {})
+		test('null', null)
+		test('undefined', undefined)
+
+		function test(what, value){
+			it(what, function (done) {
+				series(value, error).node(done)
+			})
+		}
 	})
 })
 
-describe('forEach error', function () {
-	it('should pass the error to the callback', function (done) {
-		each([1,2,3], function(x, callback){
-			callback('error')
-		}, function(err){
-			err.should.equal('error')
-			done()
-		})
-	})
-})
 
-describe('forEach no callback', function(){
-	it('should not error', function () {
-		each([1], function (val, done) {
-			val.should.equal(1)
-			done()
-		})
+describe('parallel', function () {
+	it('should handle arrays', function (done) {
+		parallel([1,2,3], function(v, k, done){
+			this.should.equal(context)
+			k.should.equal(v - 1)
+			v.should.be.within(1, 3)
+			delay(done)
+		}, context).node(done)
 	})
-})
 
-describe('forEachSeries', function(){
-	it('should perform operation sequentially', function (done) {
-		var i = 0
-		eachSeries([1, 2, 3], function (value, done) {
-			value.should.equal(++i)
-			setTimeout(done, random())
-		}, function (err) {
-			should.not.exist(err)
-			i.should.equal(3)
-			done()
-		})
+	it('should handle objects', function (done) {
+		parallel({0:1,1:2,2:3}, function(v, k, next){
+			this.should.equal(context);
+			(+k).should.equal(v - 1)
+			v.should.be.within(1, 3)
+			delay(next)
+		}, context).node(done)
 	})
-})
 
-describe('forEachSeries empty array', function () {
-	it('should not call the iterator', function (done) {
-		eachSeries([], function(x, callback){
-			throw Error('should not be called')
-		}, done)
-	})
-})
-
-describe('forEachSeries error', function () {
-	it('should pass the error to the callback', function (done) {
-		eachSeries([1,2,3], function(x, callback){
-			callback('error')
-		}, function(err){
-			err.should.equal('error')
-			done()
-		})
-	})
-})
-
-describe('forEachSeries no callback', function(){
-	it('should not error', function () {
-		each([1], function (val, done) {
-			val.should.equal(1)
-			done()
-		})
+	describe('should immediatly complete if given empty imput', function (done) {
+		test('array', [])
+		test('object', {})
+		test('null', null)
+		test('undefined', undefined)
+		
+		function test(what, value){
+			it(what, function (done) {
+				parallel(value, error).node(done)
+			})
+		}
 	})
 })

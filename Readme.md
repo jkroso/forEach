@@ -1,71 +1,65 @@
-# async-forEach
 
-Perform an async operation on each item of an array. This code was inspired by [coalan/async](https://github.com/caolan/async). I was finding I only use a small portion of that library at a time so thought it appropriate to start seperating the ones I use. This implementation is dramatically more efficient than the implementation in async which is important to me because its a low level tool.
+# foreach
+
+  iterate over key value pairs (array or object). async or sync implementations
 
 ## Getting Started
 
-With component(1) 
+_With component_  
 
-`component install jkroso/async-forEach`
+  $ component install jkroso/foreach
 
-In Node.js 
+_With npm_  
 
-`npm install jkroso/async-forEach`
+  $ npm install jkroso/foreach --save
+
+then in your app:
+
+```js
+var foreach = require('foreach')
+var async = require('foreach/async')
+var series = require('foreach/series')
+```
 
 ## API
-These functions share their api's with their respective coalan/async functions so further documentation can be found [there](https://github.com/caolan/async).
 
-```javascript
-var forEach = require('async-forEach')
-var series = forEach.series
-```
-  - [forEach()](#foreach)
-  - [exports.series](#exportsseries)
+- [foreach()](#foreach)
+- [async()](#async)
+- [series()](#series)
 
-## forEach()
+### foreach(object, iterator, context)
 
-  Apply an operation to each item in an array like object. The 3rd argument
-  is an optional callback to be called on completion if there are any errors 
-  they will be passed into this callback. Note only errors passed to their 
-  respective done callbacks are propagated to the final callback. So thrown 
-  errors are not caught.
-  
+  apply iterator to each key value pair in `object`. The value is passed as the first argument and the key as the second. If you pass `context` that will be the value of `this` inside of `iterator`.
+
 ```js
-forEach([1,2,3], function(i, done){
-  // do stuff
-  done()
-}, function(err){
-  // called when all items have called their done callback
+foreach({a:1,b:2}, function(v, k){
+  // v = 1,2
+  // k = a,b
+})
+foreach([1,2], function(v, k){
+  // v = 1,2
+  // k = 0,1
 })
 ```
 
-## exports.series
+### async()
 
-  Like forEach but the next item will not be proccessed until the previous one completes
+  Same API as the sync version except it will return a promise object, which will either, resolve when all items have been processed or reject when one rejects. No ordering is guaranteed between items. If `iterator` takes a 3rd argument it is expected to be a callback function.
 
-## Release History
-_(Nothing yet)_
+### series()
 
-## License
-Copyright (c) 2012 Jakeb Rosoman
+  Like forEach but the next item will not be processed until the previous one completes
 
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
+## Running the tests
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+```bash
+$ npm install
+$ make
+```
+Then open your browser to the `./test` directory.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
+_Note: these commands don't work on windows._ 
+
+## License 
+
+[MIT](License)

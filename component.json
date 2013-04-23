@@ -1,14 +1,16 @@
 {
-  "name": "async-forEach",
-  "repo": "jkroso/async-forEach",
-  "description": "perform an optionally async operation on each item of an array",
-  "version": "0.1.0",
-  "keywords": ["aysnc","iteration","array","series"],
-  "dependencies": {},
-  "main": "src/index.js",
+  "name": "foreach",
+  "repo": "jkroso/foreach",
+  "description": "iterate over key value pairs (array or object)",
+  "version": "0.2.0",
+  "keywords": ["iterate","each","array","async"],
+  "dependencies": {
+    "jkroso/laissez-faire": "*"
+  },
   "scripts": [
-	"src/index.js"
+	  "index.js",
+    "async.js",
+    "series.js"
   ],
-  "styles":[],
   "license": "MIT"
 }
