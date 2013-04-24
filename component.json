@@ -2,7 +2,7 @@
   "name": "foreach",
   "repo": "jkroso/foreach",
   "description": "iterate over key value pairs (array or object)",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "keywords": ["iterate","each","array","async"],
   "dependencies": {
     "jkroso/laissez-faire": "*"

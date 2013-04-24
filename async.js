@@ -32,7 +32,7 @@ module.exports = function(obj, fn, ctx){
 	}
 	
 	function done (e) {
-		if (e) p.reject()
+		if (e) p.reject(e)
 		else if (--pending <= 0) p.fulfill()
 	}
 

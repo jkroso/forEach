@@ -76,6 +76,26 @@ describe('series', function () {
 			})
 		}
 	})
+
+	describe('error handling', function () {
+		it('array', function (done) {
+			series([1,2,3], function(v,k, next){
+				delay(next, new Error(v.toString()))
+			}).then(null, function(e){
+				e.message.should.equal('1')
+				done()
+			})
+		})
+
+		it('object', function (done) {
+			series({0:1,1:2,2:3}, function(v,k, next){
+				delay(next, new Error(v.toString()))
+			}).then(null, function(e){
+				e.message.should.equal('1')
+				done()
+			})
+		})
+	})
 })
 
 
@@ -109,5 +129,25 @@ describe('parallel', function () {
 				parallel(value, error).node(done)
 			})
 		}
+	})
+
+	describe('error handling', function () {
+		it('array', function (done) {
+			parallel([1,2,3], function(v,k, next){
+				delay(next, new Error(v.toString()))
+			}).then(null, function(e){ 
+				e.should.be.an.instanceOf(Error)
+				done()
+			})
+		})
+
+		it('object', function (done) {
+			parallel({0:1,1:2,2:3}, function(v,k, next){
+				delay(next, new Error(v.toString()))
+			}).then(null, function(e){ 
+				e.should.be.an.instanceOf(Error)
+				done()
+			})
+		})
 	})
 })
