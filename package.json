@@ -1,6 +1,6 @@
 {
   "name": "foreach",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "iterate over key value pairs (array or object)",
   "devDependencies": {
     "mocha": "~1.9.0",
@@ -25,5 +25,8 @@
     "async"
   ],
   "author": "Jake Rosoman",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "when": "https://github.com/jkroso/when/archive/1.0.0.tar.gz"
+  }
 }

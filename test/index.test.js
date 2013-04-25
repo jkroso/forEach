@@ -3,6 +3,7 @@ var should = require('chai').should()
   , each = require('..')
   , series = require('../series')
   , parallel = require('../async')
+  , promise = require('laissez-faire')
 
 function random () {
 	return Math.round(Math.random() * 10)
@@ -64,6 +65,21 @@ describe('series', function () {
 		}).node(done)
 	})
 
+	it('should work with promises if `fn.length < 3`', function (done) {
+		var res = []
+		series({0:1,1:2,2:3}, function(v, k){
+			this.should.equal(context)
+			return promise(function(fulfill){
+				delay(function(){
+					res.push([k, v])
+					fulfill()
+				})
+			})
+		}, context).then(function(){
+			res.should.deep.equal([['0',1], ['1',2], ['2',3]])
+		}).node(done)
+	})
+
 	describe('should immediatly complete if given empty imput', function (done) {
 		test('array', [])
 		test('object', {})
@@ -113,8 +129,21 @@ describe('parallel', function () {
 		parallel({0:1,1:2,2:3}, function(v, k, next){
 			this.should.equal(context);
 			(+k).should.equal(v - 1)
+			k.should.be.a('string')
 			v.should.be.within(1, 3)
 			delay(next)
+		}, context).node(done)
+	})
+
+	it('should work with promises if `fn.length < 3`', function (done) {
+		parallel({0:1,1:2,2:3}, function(v, k){
+			this.should.equal(context);
+			(+k).should.equal(v - 1)
+			k.should.be.a('string')
+			v.should.be.within(1, 3)
+			return promise(function(fulfill){
+				delay(fulfill)
+			})
 		}, context).node(done)
 	})
 

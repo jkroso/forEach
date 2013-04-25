@@ -46,9 +46,17 @@ foreach([1,2], function(v, k){
 
   Same API as the sync version except it will return a promise object, which will either, resolve when all items have been processed or reject when one rejects. No ordering is guaranteed between items. If `iterator` takes a 3rd argument it is expected to be a callback function.
 
+```js
+async([1,2,3], function(value, i, done){
+  setTimeout(done, i)
+}).then(function(){
+  // runs after all async processes have called `done`
+})
+```
+
 ### series()
 
-  Like forEach but the next item will not be processed until the previous one completes
+  Like `async` but the next item will not be processed until the previous one completes
 
 ## Running the tests
 
