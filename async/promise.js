@@ -9,19 +9,19 @@ module.exports = function(obj, fn, ctx){
 	var p = new Promise
 	if (obj == null) return p.fulfill()
 	var i = 0
+	var len = obj.length
+	var pending
 	// array
-	var pending = obj.length
-	if (pending === +pending) {
-		if (!pending) return p.fulfill()
-		while (i < pending) when(fn.call(ctx, obj[i], i++), done, fail)
+	if (len === +len) {
+		if (!(pending = len)) return p.fulfill()
+		while (i < len) when(fn.call(ctx, obj[i], i++), done, fail)
 	} 
 	// object
 	else {
 		var keys = []
 		for (var k in obj) keys.push(k)
-		var pending = keys.length
-		if (!pending) return p.fulfill()
-		while (i < pending) {
+		if (!(len = pending = keys.length)) return p.fulfill()
+		while (i < len) {
 			when(fn.call(ctx, obj[k = keys[i++]], k), done, fail)
 		}
 	}

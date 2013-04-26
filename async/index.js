@@ -1,6 +1,6 @@
 
-var promised = require('./async-promised')
-  , cb = require('./async-cb')
+var promised = require('./promise')
+  , cb = require('./cb')
 
 /**
  * Asynchronous parallel each. If `fn` takes less

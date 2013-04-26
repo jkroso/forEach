@@ -65,7 +65,7 @@ describe('series', function () {
 		}).node(done)
 	})
 
-	it('should work with promises if `fn.length < 3`', function (done) {
+	it.skip('should work with promises if `fn.length < 3`', function (done) {
 		var res = []
 		series({0:1,1:2,2:3}, function(v, k){
 			this.should.equal(context)
@@ -145,6 +145,46 @@ describe('parallel', function () {
 				delay(fulfill)
 			})
 		}, context).node(done)
+	})
+
+	describe('immediate fulfillment', function () {
+		it('promises', function (done) {
+			var i = 0
+			parallel({0:1,1:2,2:3}, function(v, k){
+				return promise().fulfill(i++)
+			}, context)
+			.then(function(){
+				i.should.equal(3)
+			})
+			.then(function(){
+				return parallel([1,2,3], function(v, k){
+					return promise().fulfill(i++)
+				}, context)
+			})
+			.then(function(){
+				i.should.equal(6)
+			})
+			.node(done)
+		})
+
+		it('callbacks', function (done) {
+			var i = 0
+			parallel({0:1,1:2,2:3}, function(v, k, done){
+				done(null, i++)
+			}, context)
+			.then(function(){
+				i.should.equal(3)
+			})
+			.then(function(){
+				return parallel([1,2,3], function(v, k, done){
+					done(null, i++)
+				}, context)
+			})
+			.then(function(){
+				i.should.equal(6)
+			})
+			.node(done)
+		})
 	})
 
 	describe('should immediatly complete if given empty imput', function (done) {
