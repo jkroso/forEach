@@ -1,5 +1,5 @@
 REPORTER= spec
-SRC=index.js series.js async.js
+SRC=index.js series/* async/*
 
 all: test/built.js
 

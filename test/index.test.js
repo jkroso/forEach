@@ -65,7 +65,7 @@ describe('series', function () {
 		}).node(done)
 	})
 
-	it.skip('should work with promises if `fn.length < 3`', function (done) {
+	it('should work with promises if `fn.length < 3`', function (done) {
 		var res = []
 		series({0:1,1:2,2:3}, function(v, k){
 			this.should.equal(context)
@@ -112,8 +112,39 @@ describe('series', function () {
 			})
 		})
 	})
-})
 
+	describe('immediate resolving `fn`', function () {
+		it('promises', function (done) {
+			var res = []
+			series([1,2,3], function(value){
+				res.push(value)
+				return promise().fulfill(value)
+			}).then(function(){
+				return series({0:4,1:5,2:6}, function(value){
+					res.push(value)
+					return promise().fulfill(value)
+				})
+			}).then(function(){
+				res.should.deep.equal([1,2,3,4,5,6])
+			}).node(done)
+		})
+
+		it('callbacks', function (done) {
+			var res = []
+			series([1,2,3], function(value, i, next){
+				res.push(value)
+				next()
+			}).then(function(){
+				return series({0:4,1:5,2:6}, function(value, i, next){
+					res.push(value)
+					next()
+				})
+			}).then(function(){
+				res.should.deep.equal([1,2,3,4,5,6])
+			}).node(done)
+		})
+	})
+})
 
 describe('parallel', function () {
 	it('should handle arrays', function (done) {

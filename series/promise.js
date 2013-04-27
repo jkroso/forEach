@@ -1,11 +1,12 @@
 
 var Promise = require('laissez-faire/full')
+  , when = require('when/read')
 
 /**
  * Asynchronous each
  *
  * @param {Object|Array}
- * @param {Function} (value, key, done) -> nil
+ * @param {Function} (value, key) -> Promise nil
  * @param {Object} context is optional
  * @return {Promise} resolves to nil on completion
  */
@@ -17,31 +18,26 @@ module.exports = function(obj, fn, ctx){
 	var pending = obj.length
 	// array
 	if (pending === +pending) {
-		var next = function(e){
-			if (e) p.reject(e)
-			else if (i === pending) p.fulfill()
-			else fn.call(ctx, obj[i], i++, next)
+		var next = function(){
+			if (i === pending) p.fulfill()
+			else when(fn.call(ctx, obj[i], i++), next, fail)
 		}
 	} 
 	// object
 	else {
-		var keys = enumkeys(obj)
+		var keys = []
+		for (var k in obj) keys.push(k)
 		var pending = keys.length
-		var next = function(e){
+		var next = function(){
 			var k = keys[i++]
-			if (e) p.reject(e)
-			else if (i > pending) p.fulfill()
-			else fn.call(ctx, obj[k], k, next)			
+			if (i > pending) p.fulfill()
+			else when(fn.call(ctx, obj[k], k), next, fail)
 		}
 	}
+
+	var fail = function(e) { p.reject(e) }
 
 	next()
 
 	return p
-}
-
-function enumkeys(obj){
-	var res = []
-	for (var k in obj) res.push(k)
-	return res
 }

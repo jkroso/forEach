@@ -1,12 +1,12 @@
 {
   "name": "foreach",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "iterate over key value pairs (array or object)",
   "devDependencies": {
     "mocha": "~1.9.0",
     "chai": "~1.5.0",
-    "bigfile": "~0.3.2",
-    "sourcegraph": "~0.6.1"
+    "bigfile": "~0.3.3",
+    "sourcegraph": "~0.6.4"
   },
   "scripts": {
     "test": "make test"
