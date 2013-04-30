@@ -27,6 +27,7 @@
   "author": "Jake Rosoman",
   "license": "MIT",
   "dependencies": {
-    "when": "https://github.com/jkroso/when/archive/1.0.0.tar.gz"
+    "when": "https://github.com/jkroso/when/archive/1.0.0.tar.gz",
+    "laissez-faire": "https://github.com/jkroso/laissez-faire/archive/0.12.1.tar.gz"
   }
 }
