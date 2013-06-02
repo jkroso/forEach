@@ -1,15 +1,10 @@
 {
   "name": "foreach",
-  "version": "0.5.0",
+  "version": "0.5.2",
   "description": "iterate over key value pairs (array or object)",
   "devDependencies": {
-    "mocha": "~1.9.0",
-    "chai": "~1.5.0",
-    "bigfile": "~0.3.3",
-    "sourcegraph": "~0.6.4"
-  },
-  "scripts": {
-    "test": "make test"
+    "mocha": "~1.10.0",
+    "chai": "~1.6.0"
   },
   "repository": {
     "type": "git",
@@ -28,6 +23,6 @@
   "license": "MIT",
   "dependencies": {
     "when": "https://github.com/jkroso/when/archive/1.0.0.tar.gz",
-    "laissez-faire": "https://github.com/jkroso/laissez-faire/archive/0.12.1.tar.gz"
+    "laissez-faire": "http://github.com/jkroso/laissez-faire/tarball/0.12.3"
   }
 }
