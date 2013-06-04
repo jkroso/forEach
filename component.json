@@ -1,15 +1,17 @@
 {
   "name": "foreach",
   "repo": "jkroso/foreach",
-  "description": "iterate over key value pairs (array or object)",
-  "version": "0.5.3",
+  "description": "iterate over key value pairs (async/sync)",
+  "version": "0.6.0",
   "keywords": ["iterate","each","array","async"],
   "dependencies": {
     "jkroso/laissez-faire": "0.12.4",
     "jkroso/when": "1.0.0"
   },
   "scripts": [
-	  "index.js"
+	  "index.js",
+    "async.js",
+    "series.js"
   ],
   "license": "MIT"
 }

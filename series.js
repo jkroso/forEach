@@ -3,7 +3,7 @@ var Promise = require('laissez-faire/full')
 var when = require('when/read')
 
 /**
- * Asynchronous each
+ * Asynchronous but sequential each
  *
  * @param {Object|Array}
  * @param {Function} (value, key) -> Promise

@@ -1,9 +1,15 @@
-/**
- * specific implmentation for promise returning `fn`'s
- */
 
 var Promise = require('laissez-faire/full')
 var when = require('when/read')
+
+/**
+ * parallel each
+ * 
+ * @param {Object|Array}
+ * @param {Function} (value, key) -> Promise
+ * @param {Object} [context]
+ * @return {Promise} nil
+ */
 
 module.exports = function(obj, fn, ctx){
 	var promise = new Promise
@@ -13,14 +19,16 @@ module.exports = function(obj, fn, ctx){
 	var pending
 	// array
 	if (len === +len) {
-		if (!(pending = len)) return promise.write()
+		if (!len) return promise.write()
+		pending = len
 		while (i < len) {
 			when(fn.call(ctx, obj[i], i++), done, fail)
 		}
 	} else {
 		var keys = []
 		for (var k in obj) keys.push(k)
-		if (!(len = pending = keys.length)) return promise.write()
+		len = pending = keys.length
+		if (!len) return promise.write()
 		while (i < len) {
 			when(fn.call(ctx, obj[k = keys[i++]], k), done, fail)
 		}

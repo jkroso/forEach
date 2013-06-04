@@ -4,7 +4,7 @@
  *
  * @param {Object|Array}
  * @param {Function} (value, key) -> nil
- * @param {Object} context is optional
+ * @param {Object} [context]
  * @return {nil}
  */
 
