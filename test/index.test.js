@@ -4,17 +4,21 @@ var should = require('chai').should()
   , series = require('../series')
   , parallel = require('../async')
   , promise = require('laissez-faire')
+  , promisify = require('promisify')
 
-function random () {
+function random(){
 	return Math.round(Math.random() * 10)
 }
 
 function delay(fn){
 	var args = [].slice.call(arguments, 1)
+	var self = this
 	setTimeout(function () {
-		fn.apply(null, args)
+		fn.apply(self, args)
 	}, random())
 }
+
+var pelay = promisify(delay)
 
 function error(){ throw new Error('should not be called') }
 
@@ -65,19 +69,36 @@ describe('series', function () {
 		}).node(done)
 	})
 
-	it('should work with promises if `fn.length < 3`', function (done) {
-		var res = []
-		series({0:1,1:2,2:3}, function(v, k){
-			this.should.equal(context)
-			return promise(function(fulfill){
-				delay(function(){
+	describe('promise handling if `fn.length < 3`', function(){
+		it('objects', function(done){
+			var res = []
+			var object = Object.create(null)
+			object[0] = 1
+			object[1] = 2
+			object[2] = 3
+			series(object, function(v, k){
+				this.should.equal(context)
+				return pelay().then(function(){
 					res.push([k, v])
-					fulfill()
 				})
+			}, context).then(function(){
+				res.should.eql([['0',1], ['1',2], ['2',3]])
+				done()
 			})
-		}, context).then(function(){
-			res.should.deep.equal([['0',1], ['1',2], ['2',3]])
-		}).node(done)
+		})
+
+		it('arrays', function(done){
+			var res = []
+			series([1,2,3], function(v, k){
+				this.should.equal(context)
+				return pelay().then(function(){
+					res.push([k, v])
+				})
+			}, context).then(function(){
+				res.should.eql([[0,1], [1,2], [2,3]])
+				done()
+			})
+		})
 	})
 
 	describe('should immediatly complete if given empty imput', function (done) {

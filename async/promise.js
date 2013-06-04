@@ -1,33 +1,33 @@
 /**
- * async.js but only works with promise returning `fn`'s
+ * specific implmentation for promise returning `fn`'s
  */
 
 var Promise = require('laissez-faire/full')
-  , when = require('when/read')
+var when = require('when/read')
 
 module.exports = function(obj, fn, ctx){
-	var p = new Promise
-	if (obj == null) return p.fulfill()
+	var promise = new Promise
+	if (obj == null) return promise.write()
 	var i = 0
 	var len = obj.length
 	var pending
 	// array
 	if (len === +len) {
-		if (!(pending = len)) return p.fulfill()
-		while (i < len) when(fn.call(ctx, obj[i], i++), done, fail)
-	} 
-	// object
-	else {
+		if (!(pending = len)) return promise.write()
+		while (i < len) {
+			when(fn.call(ctx, obj[i], i++), done, fail)
+		}
+	} else {
 		var keys = []
 		for (var k in obj) keys.push(k)
-		if (!(len = pending = keys.length)) return p.fulfill()
+		if (!(len = pending = keys.length)) return promise.write()
 		while (i < len) {
 			when(fn.call(ctx, obj[k = keys[i++]], k), done, fail)
 		}
 	}
 
-	function fail(e){ p.reject(e) }
-	function done(){ if (--pending <= 0) p.fulfill() }
+	function fail(e){ promise.error(e) }
+	function done(){ if (--pending <= 0) promise.write() }
 
-	return p
+	return promise
 }

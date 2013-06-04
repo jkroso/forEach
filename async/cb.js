@@ -5,30 +5,32 @@
 var Promise = require('laissez-faire/full')
 
 module.exports = function(obj, fn, ctx){
-	var p = new Promise
-	if (obj == null) return p.fulfill()
+	var promise = new Promise
+	if (obj == null) return promise.write()
 	var i = 0
 	var len = obj.length
 	var pending
 	// array
 	if (len === +len) {
-		if (!(pending = len)) return p.fulfill()
-		while (i < len) fn.call(ctx, obj[i], i++, done)
+		if (!(pending = len)) return promise.write()
+		while (i < len) {
+			fn.call(ctx, obj[i], i++, done)
+		}
 	} 
 	// object
 	else {
 		var keys = []
 		for (var k in obj) keys.push(k)
-		if (!(pending = len = keys.length)) return p.fulfill()
+		if (!(pending = len = keys.length)) return promise.write()
 		while (i < len) {
 			fn.call(ctx, obj[k = keys[i++]], k, done)
 		}
 	}
 	
 	function done (e) {
-		if (e) p.reject(e)
-		else if (--pending <= 0) p.fulfill()
+		if (e) promise.error(e)
+		else if (--pending <= 0) promise.write()
 	}
 
-	return p
+	return promise
 }

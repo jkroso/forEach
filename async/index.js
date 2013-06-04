@@ -1,6 +1,6 @@
 
 var promised = require('./promise')
-  , cb = require('./cb')
+var cps = require('./cb')
 
 /**
  * Asynchronous parallel each. If `fn` takes less
@@ -10,12 +10,12 @@ var promised = require('./promise')
  *
  * @param {Object|Array} obj
  * @param {Function} fn (value, key[, done])
- * @param {Object} context is optional
- * @return {Promise} resolves to nil on completion
+ * @param {Object} [context]
+ * @return {Promise} nil
  */
 
 module.exports = function(obj, fn, ctx){
 	return fn.length < 3
 		? promised(obj, fn, ctx)
-		: cb(obj, fn, ctx)
+		: cps(obj, fn, ctx)
 }

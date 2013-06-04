@@ -1,6 +1,6 @@
 
 var promising = require('./promise')
-  , cb = require('./cb')
+var cps = require('./cb')
 
 /**
  * Dispatch to the appropriate implementation depending 
@@ -10,5 +10,5 @@ var promising = require('./promise')
 module.exports = function(obj, fn, ctx){
 	return fn.length < 3
 		? promising(obj, fn, ctx)
-		: cb(obj, fn, ctx)
+		: cps(obj, fn, ctx)
 }
