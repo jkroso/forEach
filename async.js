@@ -1,5 +1,6 @@
 
-var ResType = require('result-type')
+var decorate = require('when/decorate')
+  , ResType = require('result-type')
   , Result = require('result')
   , each = require('./index')
 
@@ -12,7 +13,7 @@ var ResType = require('result-type')
  * @return {Result}
  */
 
-module.exports = function(obj, fn, ctx){
+module.exports = decorate(function(obj, fn, ctx){
 	var result = new Result
 	var done = false
 	var pending = 0
@@ -38,4 +39,4 @@ module.exports = function(obj, fn, ctx){
 	else done = true
 
 	return result
-}
+})

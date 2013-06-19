@@ -10,8 +10,9 @@
     "async"
   ],
   "dependencies": {
-    "jkroso/when": "3.0.1",
-    "jkroso/result": "0.1.1"
+    "jkroso/when": "3.1.0",
+    "jkroso/result": "0.2.0",
+    "jkroso/result-type": "1.0.0"
   },
   "development": {
     "jkroso/serve": "1.4.1",

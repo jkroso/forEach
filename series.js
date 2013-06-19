@@ -1,41 +1,49 @@
 
-var when = require('when/read')
-var Result = require('result')
+var decorate = require('when/decorate')
+  , when = require('when/read')
+  , Result = require('result')
 
 /**
  * Asynchronous but sequential each
  *
  * @param {Object|Array} obj
- * @param {Function} fn(value, key) -> result
+ * @param {Function} fn(value, key)
  * @param {Object} [context]
  * @return {Result}
  */
 
-module.exports = function(obj, fn, ctx){
-	var result = new Result
-	if (obj == null) return result.write()
+module.exports = decorate(function(obj, fn, ctx){
+	if (obj == null) return Result.wrap()
 	var pending = obj.length
+	var result = new Result
 	var i = 0
+
+	var fail = function(e) {
+		result.error(e)
+	}
+
 	// array
 	if (typeof pending == 'number') {
 		var next = function(){
-			if (i === pending) result.write()
-			else when(fn.call(ctx, obj[i], i++), next, fail)
+			if (i === pending) return result.write()
+			try { var ret = fn.call(ctx, obj[i], i++) }
+			catch (e) { return fail(e) }
+			when(ret, next, fail)
 		}
 	} else {
 		var keys = []
 		for (var k in obj) keys.push(k)
 		var pending = keys.length
 		var next = function(){
+			if (i === pending) return result.write()
 			var k = keys[i++]
-			if (i > pending) result.write()
-			else when(fn.call(ctx, obj[k], k), next, fail)
+			try { var ret = fn.call(ctx, obj[k], k) }
+			catch (e) { return fail(e) }
+			when(ret, next, fail)
 		}
 	}
-
-	var fail = function(e) { result.error(e) }
 
 	next()
 
 	return result
-}
+})
