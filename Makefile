@@ -1,19 +1,20 @@
 REPORTER=dot
 
-serve: node_modules/.bin
-	@node_modules/.bin/serve
+serve: node_modules
+	@node_modules/serve/bin/serve
 
-test:
-	@node_modules/.bin/mocha test/*.test.js \
+test: node_modules
+	@node_modules/mocha/bin/_mocha test/*.test.js \
 		--reporter $(REPORTER) \
+		--timeout 500 \
+		--check-leaks \
 		--bail
 
 node_modules: component.json
-	@packin install
-
-node_modules/.bin: package.json node_modules
-	@npm install
-	@npm install http://github.com/jkroso/serve/tarball/1.2.2
+	@packin install --meta deps.json,component.json,package.json \
+		--folder node_modules \
+		--executables \
+		--no-retrace
 
 clean:
 	rm -r node_modules
