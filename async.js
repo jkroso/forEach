@@ -1,6 +1,7 @@
 
-var when = require('when/read')
-var Result = require('result')
+var ResType = require('result-type')
+  , Result = require('result')
+  , each = require('./index')
 
 /**
  * parallel each
@@ -13,29 +14,27 @@ var Result = require('result')
 
 module.exports = function(obj, fn, ctx){
 	var result = new Result
-	if (obj == null) return result.write()
-	var len = obj.length
-	var pending
-	var i = 0
-	// array
-	if (typeof len == 'number') {
-		if (len === 0) return result.write()
-		pending = len
-		while (i < len) {
-			when(fn.call(ctx, obj[i], i++), done, fail)
-		}
-	} else {
-		var keys = []
-		for (var k in obj) keys.push(k)
-		len = pending = keys.length
-		if (len === 0) return result.write()
-		while (i < len) {
-			when(fn.call(ctx, obj[k = keys[i++]], k), done, fail)
-		}
+	var done = false
+	var pending = 0
+	
+	function fail(e){
+		result.error(e)
 	}
 
-	function fail(e){ result.error(e) }
-	function done(){ if (--pending <= 0) result.write() }
+	function write(){
+		if (--pending === 0 && done) result.write()
+	}
+
+	each(obj, function(value, key){
+		var ret = fn.call(ctx, value, key)
+		if (ret instanceof ResType) {
+			pending++
+			ret.read(write, fail)
+		}
+	})	
+
+	if (pending === 0) result.write()
+	else done = true
 
 	return result
 }
