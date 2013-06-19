@@ -1,11 +1,7 @@
 {
   "name": "foreach",
-  "version": "0.6.0",
-  "description": "iterate over key value pairs (async/sync)",
-  "devDependencies": {
-    "mocha": "~1.10.0",
-    "chai": "~1.6.0"
-  },
+  "version": "0.7.0",
+  "description": "iterate over key value pairs",
   "repository": {
     "type": "git",
     "url": "git://github.com/jkroso/foreach.git"
@@ -22,7 +18,7 @@
   "author": "Jake Rosoman",
   "license": "MIT",
   "dependencies": {
-    "when": "http://github.com/jkroso/when/tarball/1.0.0",
-    "laissez-faire": "~0.12.4"
+    "when": "http://github.com/jkroso/when/tarball/3.0.0",
+    "result": "~0.1.1"
   }
 }

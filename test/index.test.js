@@ -1,19 +1,17 @@
 
 var should = require('chai').should()
-  , each = require('..')
-  , series = require('../series')
   , parallel = require('../async')
-  , promise = require('laissez-faire')
-  , promisify = require('promisify')
+  , series = require('../series')
+  , Result = require('result')
+  , each = require('..')
 
-function delay(err, val){
-	var args = arguments
-	return promise(function(fulfill, reject){
-		setTimeout(function(){
-			if (args.length > 1) fulfill(val)
-			else reject(err)
-		}, Math.round(Math.random() * 10))
-	})
+function delay(value){
+	var result = new Result
+	setTimeout(function () {
+		if (value instanceof Error) result.error(value)
+		else result.write(value)
+	}, Math.random() * 10)
+	return result
 }
 
 function error(){ throw new Error('should not be called') }
@@ -44,7 +42,7 @@ describe('series', function () {
 		var res = []
 		series([1,2,3], function(v, k){
 			this.should.equal(context)
-			return delay(null, null).then(function(){
+			return delay().then(function(){
 				res.push([k,v])
 			})
 		}, context).then(function(){
@@ -56,7 +54,7 @@ describe('series', function () {
 		var res = []
 		series({0:1,1:2,2:3}, function(v, k){
 			this.should.equal(context)
-			return delay(null, null).then(function(){
+			return delay().then(function(){
 				res.push([k,v])
 			})
 		}, context).then(function(){
@@ -101,11 +99,11 @@ describe('series', function () {
 		var res = []
 		series([1,2,3], function(value){
 			res.push(value)
-			return promise().fulfill(value)
+			return new Result().write(value)
 		}).then(function(){
 			return series({0:4,1:5,2:6}, function(value){
 				res.push(value)
-				return promise().fulfill(value)
+				return new Result().write(value)
 			})
 		}).then(function(){
 			res.should.deep.equal([1,2,3,4,5,6])
@@ -119,7 +117,7 @@ describe('parallel', function () {
 			this.should.equal(context)
 			k.should.equal(v - 1)
 			v.should.be.within(1, 3)
-			return delay(null, null)
+			return delay()
 		}, context).node(done)
 	})
 
@@ -129,21 +127,21 @@ describe('parallel', function () {
 			this.should.equal(context)
 			k.should.be.a('string')
 			v.should.be.within(1, 3)
-			return delay(null, null)
+			return delay()
 		}, context).node(done)
 	})
 
 	it('immediate fulfillment', function (done) {
 		var i = 0
 		parallel({0:1,1:2,2:3}, function(v, k){
-			return promise().fulfill(i++)
+			return new Result().write(i++)
 		}, context)
 		.then(function(){
 			i.should.equal(3)
 		})
 		.then(function(){
 			return parallel([1,2,3], function(v, k){
-				return promise().fulfill(i++)
+				return new Result().write(i++)
 			}, context)
 		})
 		.then(function(){
