@@ -2,16 +2,16 @@
 /**
  * Synchronous each
  *
- * @param {Object|Array}
- * @param {Function} (value, key) -> nil
+ * @param {Object|Array} obj
+ * @param {Function} fn (value, key)
  * @param {Object} [context]
- * @return {nil}
+ * @return {undefined}
  */
 
 module.exports = function(obj, fn, ctx){
 	if (obj == null) return
 	var l = obj.length
-	if (l === +l) {
+	if (typeof l == 'number') {
 		for (var k = 0; k < l; k++) {
 			fn.call(ctx, obj[k], k)
 		}
