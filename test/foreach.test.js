@@ -111,6 +111,20 @@ describe('series', function(){
 			res.should.deep.equal([1,2,3,4,5,6])
 		}).node(done)
 	})
+
+	syncError([1,2,3], 'array')
+	syncError({a:1,b:2,c:3}, 'object')
+	function syncError(object, type){
+		it('should catch sync errors with an ' + type, function(done){
+			var error = new Error(this.test.title)
+			series(object, function(){
+				throw error
+			}).then(null, function(e){
+				e.should.equal(error)
+				done()
+			})
+		})
+	}
 })
 
 describe('parallel', function(){
@@ -180,6 +194,16 @@ describe('parallel', function(){
 				return delay(new Error(v.toString()))
 			}).then(null, function(e){ 
 				e.should.be.an.instanceOf(Error)
+				done()
+			})
+		})
+
+		it('should catch sync errors', function(done){
+			var error = new Error(this.test.title)
+			parallel([1,2,3], function(){
+				throw error
+			}).then(null, function(e){
+				e.should.equal(error)
 				done()
 			})
 		})

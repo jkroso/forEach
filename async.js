@@ -26,7 +26,8 @@ module.exports = function(obj, fn, ctx){
 	}
 
 	each(obj, function(value, key){
-		var ret = fn.call(ctx, value, key)
+		try { var ret = fn.call(ctx, value, key) }
+		catch (e) { return fail(e) }
 		if (ret instanceof ResType) {
 			pending++
 			ret.read(write, fail)
