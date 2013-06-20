@@ -1,17 +1,13 @@
 
 # foreach
 
-  iterate over key value pairs (array or object). async or sync implementations
+  iterate over key value pairs, arrays and objects. There are also two alternative asynchronous implementations with matching api's
 
-## Getting Started
+## Installation
 
-_With component_  
+_With [component](//github.com/component/component), [packin](//github.com/jkroso/packin) or [npm](//github.com/isaacs/npm)_  
 
-  $ component install jkroso/foreach
-
-_With npm_  
-
-  $ npm install jkroso/foreach --save
+    $ {package mananger} install jkroso/result
 
 then in your app:
 
@@ -29,28 +25,31 @@ var series = require('foreach/series')
 
 ### foreach(object, iterator, context)
 
-  apply iterator to each key value pair in `object`. The value is passed as the first argument and the key as the second. If you pass `context` that will be the value of `this` inside of `iterator`.
+  apply `iterator` to each key value pair in `object`. The value is passed as the first argument and the key as the second. If you pass `context` that will be the value of `this` inside of `iterator`.
 
 ```js
-foreach({a:1,b:2}, function(v, k){
-  // v = 1,2
-  // k = a,b
-})
-foreach([1,2], function(v, k){
-  // v = 1,2
-  // k = 0,1
-})
+function log(v, k){
+  console.log('key: %s, value: %s', k, v)
+}
+foreach({a:1,b:2}, log)
+// => key: a, value 1
+// => key: b, value 2
+foreach([1,2], log)
+// => key: 0, value 1
+// => key: 1, value 2
 ```
 
 ### async()
 
-  Same API as the sync version except it will return a promise object, which will either, resolve when all items have been processed or reject when one rejects. No ordering is guaranteed between items.
+  Same API as the sync version except it will return a [Result](//github.com/jkroso/result) object, which will either, resolve when all items have been processed or fail when one fails. No ordering is guaranteed between items.
 
 ```js
 async([20, 10, 0], function(value, i){
-  return promise(function(fulfill){
-    setTimeout(fulfill, value)
-  })
+  var result = new Result
+  setTimeout(function(){
+    result.write()
+  }, value)
+  return result
 }).then(function(){
   // This function runs after all async processes have completed
   // Note that in this example the last iteration will complete before
