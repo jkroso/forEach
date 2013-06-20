@@ -4,6 +4,9 @@ var decorate = require('when/decorate')
   , Result = require('result')
   , each = require('./index')
 
+module.exports = decorate(parallelEach)
+module.exports.plain = parallelEach
+
 /**
  * parallel each
  * 
@@ -13,7 +16,7 @@ var decorate = require('when/decorate')
  * @return {Result}
  */
 
-module.exports = decorate(function(obj, fn, ctx){
+function parallelEach(obj, fn, ctx){
 	var result = new Result
 	var done = false
 	var pending = 0
@@ -39,4 +42,4 @@ module.exports = decorate(function(obj, fn, ctx){
 	else done = true
 
 	return result
-})
+}

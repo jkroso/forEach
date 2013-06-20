@@ -3,6 +3,9 @@ var decorate = require('when/decorate')
   , when = require('when/read')
   , Result = require('result')
 
+module.exports = decorate(eachSeries)
+module.exports.plain = eachSeries
+
 /**
  * Asynchronous but sequential each
  *
@@ -12,7 +15,7 @@ var decorate = require('when/decorate')
  * @return {Result}
  */
 
-module.exports = decorate(function(obj, fn, ctx){
+function eachSeries(obj, fn, ctx){
 	if (obj == null) return Result.wrap()
 	var pending = obj.length
 	var result = new Result
@@ -46,4 +49,4 @@ module.exports = decorate(function(obj, fn, ctx){
 	next()
 
 	return result
-})
+}
