@@ -41,7 +41,7 @@ foreach([1,2], log)
 
 ### async()
 
-  Same API as the sync version except it will return a [Result](//github.com/jkroso/result) object, which will either, resolve when all items have been processed or fail when one fails. No ordering is guaranteed between items.
+  Same API as the sync version except it will return a [Result](//github.com/jkroso/result) object, which will either, resolve when all items have been processed or fail when one fails. No ordering is guaranteed between items. Arguments you pass into `async` can also be wrapped in Result objects with the desired effect.
 
 ```js
 async([20, 10, 0], function(value, i){
