@@ -7,7 +7,7 @@
 
 _With [component](//github.com/component/component), [packin](//github.com/jkroso/packin) or [npm](//github.com/isaacs/npm)_  
 
-    $ {package mananger} install jkroso/result
+    $ {package mananger} install jkroso/forEach
 
 then in your app:
 
