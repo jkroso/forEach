@@ -1,6 +1,6 @@
 {
   "name": "foreach",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "iterate over key value pairs",
   "repository": {
     "type": "git",
@@ -18,8 +18,8 @@
   "author": "Jake Rosoman",
   "license": "MIT",
   "dependencies": {
-    "when": "http://github.com/jkroso/when/tarball/3.2.0",
+    "when": "http://github.com/jkroso/when/tarball/3.2.1",
     "result-type": "1.0.0",
-    "result": "0.2.0"
+    "result": "0.3.0"
   }
 }

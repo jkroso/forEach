@@ -2,7 +2,7 @@
   "name": "foreach",
   "repo": "jkroso/foreach",
   "description": "iterate over key value pairs",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "keywords": [
     "iterate",
     "each",
@@ -10,8 +10,8 @@
     "async"
   ],
   "dependencies": {
-    "jkroso/when": "3.2.0",
-    "jkroso/result": "0.2.0",
+    "jkroso/when": "3.2.1",
+    "jkroso/result": "0.3.0",
     "jkroso/result-type": "1.0.0"
   },
   "development": {
