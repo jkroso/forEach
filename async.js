@@ -1,26 +1,23 @@
 
-var decorate = require('when/decorate')
-  , ResType = require('result-type')
-  , Result = require('result')
-  , each = require('./index')
-
-module.exports = decorate(parallelEach)
-module.exports.plain = parallelEach
+var ResultType = require('result-type')
+var lift = require('lift-result')
+var Result = require('result')
+var each = require('./index')
 
 /**
  * parallel each
- * 
+ *
  * @param {Object|Array} obj
  * @param {Function} fn(value, key)
  * @param {Object} [context]
  * @return {Result}
  */
 
-function parallelEach(obj, fn, ctx){
+module.exports = lift(function(obj, fn, ctx){
 	var result = new Result
 	var done = false
 	var pending = 0
-	
+
 	function fail(e){
 		result.error(e)
 	}
@@ -32,14 +29,14 @@ function parallelEach(obj, fn, ctx){
 	each(obj, function(value, key){
 		try { var ret = fn.call(ctx, value, key) }
 		catch (e) { return fail(e) }
-		if (ret instanceof ResType) {
+		if (ret instanceof ResultType) {
 			pending++
 			ret.read(write, fail)
 		}
-	})	
+	})
 
 	if (pending === 0) result.write()
 	else done = true
 
 	return result
-}
+})

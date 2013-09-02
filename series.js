@@ -1,10 +1,7 @@
 
-var decorate = require('when/decorate')
-  , when = require('when/read')
-  , Result = require('result')
-
-module.exports = decorate(eachSeries)
-module.exports.plain = eachSeries
+var lift = require('lift-result')
+var Result = require('result')
+var when = Result.read
 
 /**
  * Asynchronous but sequential each
@@ -15,7 +12,7 @@ module.exports.plain = eachSeries
  * @return {Result}
  */
 
-function eachSeries(obj, fn, ctx){
+module.exports = lift(function(obj, fn, ctx){
 	if (obj == null) return Result.wrap()
 	var pending = obj.length
 	var result = new Result
@@ -49,4 +46,4 @@ function eachSeries(obj, fn, ctx){
 	next()
 
 	return result
-}
+})
