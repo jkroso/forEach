@@ -19,10 +19,6 @@ var series = require('foreach/series')
 
 ## API
 
-- [foreach()](#foreach)
-- [async()](#async)
-- [series()](#series)
-
 ### foreach(object, iterator, context)
 
   apply `iterator` to each key value pair in `object`. The value is passed as the first argument and the key as the second. If you pass `context` that will be the value of `this` inside of `iterator`.
@@ -39,7 +35,7 @@ foreach([1,2], log)
 // => key: 1, value 2
 ```
 
-### async()
+### async(object, iterator, context)
 
   Same API as the sync version except it will return a [Result](//github.com/jkroso/result) object, which will either, resolve when all items have been processed or fail when one fails. No ordering is guaranteed between items. Arguments you pass into `async` can also be wrapped in Result objects with the desired effect.
 
@@ -58,7 +54,7 @@ async([20, 10, 0], function(value, i){
 })
 ```
 
-### series()
+### series(object, iterator, context)
 
   Like `async` but the next item will not be processed until the previous one completes
 
