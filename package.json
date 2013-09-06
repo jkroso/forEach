@@ -1,6 +1,6 @@
 {
   "name": "foreach",
-  "version": "0.8.6",
+  "version": "0.8.7",
   "description": "iterate over key value pairs",
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "result-type": "1.0.0",
-    "lift-result": "0.1.0",
-    "result": "0.3.4"
+    "lift-result": "0.1.1",
+    "result": "0.4.2"
   }
 }
