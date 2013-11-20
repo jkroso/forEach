@@ -1,14 +1,9 @@
 {
   "name": "foreach",
-  "version": "0.8.7",
+  "version": "0.8.8",
   "description": "iterate over key value pairs",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/jkroso/foreach.git"
-  },
-  "bugs": {
-    "url": "https://github.com/jkroso/foreach/issues"
-  },
+  "repository": "git://github.com/jkroso/foreach.git",
+  "bugs": "https://github.com/jkroso/foreach/issues",
   "keywords": [
     "iterate",
     "each",
@@ -19,7 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "result-type": "1.0.0",
-    "lift-result": "0.1.1",
-    "result": "0.4.2"
+    "lift-result": "~0.1.2",
+    "result": "~0.4.3"
   }
 }

@@ -2,7 +2,6 @@
   "name": "foreach",
   "repo": "jkroso/foreach",
   "description": "iterate over key value pairs",
-  "version": "0.8.7",
   "keywords": [
     "iterate",
     "each",
@@ -10,14 +9,14 @@
     "async"
   ],
   "dependencies": {
-    "jkroso/result": "0.4.2",
     "jkroso/result-type": "1.0.0",
-    "jkroso/lift-result": "0.1.1"
+    "jkroso/lift-result": "0.1.2",
+    "jkroso/result": "0.4.3"
   },
   "development": {
-    "jkroso/serve": "1.5.0",
-    "visionmedia/mocha": "1.12.1",
-    "chaijs/chai": "1.7.2"
+    "visionmedia/mocha": "*",
+    "jkroso/serve": "*",
+    "chaijs/chai": "*"
   },
   "scripts": [
     "index.js",
