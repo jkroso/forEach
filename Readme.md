@@ -5,9 +5,11 @@
 
 ## Installation
 
-_With [component](//github.com/component/component), [packin](//github.com/jkroso/packin) or [npm](//github.com/isaacs/npm)_  
+With your favourite package manager:
 
-    $ {package mananger} install jkroso/forEach
+- [packin](//github.com/jkroso/packin): `packin add jkroso/forEach`
+- [component](//github.com/component/component#installing-packages): `component install jkroso/forEach`
+- [npm](//npmjs.org/doc/cli/npm-install.html): `npm install jkroso/forEach`
 
 then in your app:
 
@@ -57,10 +59,3 @@ async([20, 10, 0], function(value, i){
 ### series(object, iterator, context)
 
   Like `async` but the next item will not be processed until the previous one completes
-
-## Running the tests
-
-```bash
-$ make
-```
-Then open your browser to the `./test` directory.
