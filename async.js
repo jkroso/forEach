@@ -1,4 +1,5 @@
 
+var apply = require('lift-result/apply')
 var ResultType = require('result-type')
 var lift = require('lift-result')
 var Result = require('result')
@@ -27,7 +28,7 @@ module.exports = lift(function(obj, fn, ctx){
 	}
 
 	each(obj, function(value, key){
-		try { var ret = fn.call(ctx, value, key) }
+		try { var ret = apply.call(ctx, value, key, fn) }
 		catch (e) { return fail(e) }
 		if (ret instanceof ResultType) {
 			pending++

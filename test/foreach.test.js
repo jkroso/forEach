@@ -1,9 +1,9 @@
 
 var parallel = require('../async')
-  , series = require('../series')
-  , Result = require('result')
-  , chai = require('./chai')
-  , each = require('..')
+var series = require('../series')
+var Result = require('result')
+var chai = require('./chai')
+var each = require('..')
 
 function delay(value){
 	var result = new Result
@@ -171,7 +171,7 @@ describe('parallel', function(){
 		test('object', {})
 		test('null', null)
 		test('undefined', undefined)
-		
+
 		function test(what, value){
 			it(what, function(done){
 				parallel(value, error).node(done)
@@ -192,7 +192,7 @@ describe('parallel', function(){
 		it('object', function(done){
 			parallel({0:1,1:2,2:3}, function(v, k){
 				return delay(new Error(v.toString()))
-			}).then(null, function(e){ 
+			}).then(null, function(e){
 				e.should.be.an.instanceOf(Error)
 				done()
 			})
@@ -207,5 +207,12 @@ describe('parallel', function(){
 				done()
 			})
 		})
+	})
+
+	it('nested Promises', function(done){
+		parallel({a: delay(1) }, function(n, k){
+			k.should.equal('a')
+			n.should.equal(1)
+		}).node(done)
 	})
 })
