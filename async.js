@@ -16,7 +16,6 @@ var each = require('./index')
 
 module.exports = lift(function(obj, fn, ctx){
 	var result = new Result
-	var done = false
 	var pending = 0
 
 	function fail(e){
@@ -24,20 +23,19 @@ module.exports = lift(function(obj, fn, ctx){
 	}
 
 	function write(){
-		if (--pending === 0 && done) result.write()
+		if (--pending === 0) result.write()
 	}
 
 	each(obj, function(value, key){
-		try { var ret = apply.call(ctx, value, key, fn) }
+		try { value = apply.call(ctx, value, key, fn) }
 		catch (e) { return fail(e) }
-		if (ret instanceof ResultType) {
+		if (value instanceof ResultType) {
 			pending++
-			ret.read(write, fail)
+			value.read(write, fail)
 		}
 	})
 
 	if (pending === 0) result.write()
-	else done = true
 
 	return result
 })
