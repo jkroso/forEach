@@ -4,17 +4,17 @@
   "description": "iterate over key value pairs",
   "repository": "git://github.com/jkroso/foreach.git",
   "bugs": "https://github.com/jkroso/foreach/issues",
-  "keywords": [
-    "iterate",
-    "each",
-    "array",
-    "async"
-  ],
+  "keywords": ["iterate", "each", "array", "async"],
   "author": "Jake Rosoman",
   "license": "MIT",
   "dependencies": {
     "result-type": "1.0.0",
-    "lift-result": "~0.1.2",
-    "result": "~0.4.3"
+    "lift-result": "~0.1.3",
+    "result": "~0.4.6"
+  },
+  "devDependencies": {
+    "serve": "jkroso/serve",
+    "mocha": "*",
+    "chai": "*"
   }
 }

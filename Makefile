@@ -1,20 +1,18 @@
-REPORTER=dot
+reporter=dot
 
 serve: node_modules
-	@node_modules/serve/bin/serve -Sloj
+	@node_modules/serve/bin/serve -Slojp 0
 
 test: node_modules
-	@node_modules/mocha/bin/_mocha test/*.test.js \
-		--reporter $(REPORTER) \
+	@node_modules/mocha/bin/mocha test/*.test.js \
+		--reporter $(reporter) \
 		--timeout 500 \
 		--check-leaks \
 		--bail
 
-node_modules: component.json
-	@packin install \
-		--meta package.json,component.json,deps.json \
-		--folder node_modules \
-		--executables \
-		--no-retrace
+node_modules: package.json
+	@packin install -R \
+		--meta package.json \
+		--folder node_modules
 
 .PHONY: serve test
