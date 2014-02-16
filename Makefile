@@ -11,8 +11,6 @@ test: node_modules
 		--bail
 
 node_modules: package.json
-	@packin install -R \
-		--meta package.json \
-		--folder node_modules
+	@packin install --meta $< --folder $@
 
 .PHONY: serve test
