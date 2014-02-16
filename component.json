@@ -5,8 +5,8 @@
   "keywords": ["iterate", "each", "array", "async"],
   "dependencies": {
     "jkroso/result-type": "1.0.0",
-    "jkroso/lift-result": "0.1.2",
-    "jkroso/result": "0.4.6"
+    "jkroso/lift-result": "0.1.4",
+    "jkroso/result": "1.0.1"
   },
   "scripts": ["index.js", "async.js", "series.js"],
   "license": "MIT"
